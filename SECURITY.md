@@ -1,10 +1,10 @@
-# Security Policy
+## Security Policy
 
-## Multi-Language CLI Tools Collection
-This repository serves as a monorepo containing various security and utility tools developed in **Rust**, **JavaScript (Node.js)**, and **Python**. Given the nature of cybersecurity tools, we take code integrity and security seriously.
+### Multi-Language CLI Tools Collection
+This repository is a monorepo containing various cybersecurity and utility tools built with **Rust**, **JavaScript (Node.js)**, and **Python**. Due to the nature of these tools, we prioritize code security and reliability.
 
-## Supported Versions
-We provide security updates and bug fixes only for the latest versions available in the `main` branch.
+### Supported Versions
+Security updates and patches are exclusively provided for the latest code residing in the `master` branch.
 
 | Language | Tools Location | Security Status |
 | :--- | :--- | :--- |
@@ -12,21 +12,21 @@ We provide security updates and bug fixes only for the latest versions available
 | **JavaScript** | `cli-tools/js-*` | Supported :white_check_mark: |
 | **Python** | `cli-tools/py-*` | Supported :white_check_mark: |
 
-## Reporting a Vulnerability
-If you discover a security vulnerability (e.g., memory safety issues in Rust, script injection in Python, or dependency vulnerabilities in JS), please follow these steps:
+### Reporting a Vulnerability
+If you identify a security flaw (such as memory corruption in Rust, insecure dependencies in Node.js, or logic vulnerabilities in Python), please follow these guidelines:
 
-1.  **Do Not Open a Public Issue:** To prevent exploitation before a fix is available, please avoid reporting vulnerabilities through the public GitHub Issues tab.
-2.  **Contact:** Send a detailed report to `[email.unsterile966@passinbox.com]` or via private GitHub security advisories if enabled.
-3.  **Report Contents:** Include the specific tool name, steps to reproduce (PoC), and the potential impact.
+1.  **Private Disclosure Only:** Do not open a public Issue for security vulnerabilities. This helps protect the community from potential exploits before a fix is deployed.
+2.  **Contact:** Please send a detailed report to `[Your Email/Contact]`.
+3.  **Submission Details:** Include the specific tool affected, a Proof of Concept (PoC), and the assessed impact.
 
-## Security Standards
-We strive to maintain high security standards across all languages used:
-* **Rust:** Minimizing `unsafe` blocks and utilizing `cargo audit` for dependency checks.
-* **Python:** Auditing packages using `safety` or `pip-audit`.
-* **JavaScript:** Running `npm audit` to mitigate supply chain risks.
+### Security Practices
+We implement language-specific security checks to ensure tool integrity:
+* **Rust:** Regular use of `cargo audit` and minimizing `unsafe` code.
+* **Python:** Dependency scanning via `pip-audit`.
+* **Node.js:** Vulnerability assessment using `npm audit`.
 
-## Apache License 2.0 & Disclaimer
-As per the **Apache License 2.0**, all tools are provided "AS IS" without any warranties.
+### Apache License 2.0 & Disclaimer
+Under the **Apache License 2.0**, all software in this repository is provided "AS IS."
 
 > [!WARNING]
-> **Misuse for illegal activities is strictly prohibited.** The author(s) shall not be held responsible for any damage or legal consequences caused by the use of these tools. Use them exclusively for educational purposes, research, and authorized penetration testing.
+> **Educational and Authorized Use Only.** Any misuse of these tools for illegal activities is strictly the responsibility of the user. The author assumes no liability for damages or legal issues arising from the use of this repository.

@@ -53,6 +53,7 @@ fn main() {
                     let folder_name = entry.file_name().to_string_lossy().to_string();
 
                     // Skip hidden folders (starting with .)
+                    // you can delete this code
                     if folder_name.starts_with('.') {
                         continue;
                     }
@@ -95,3 +96,5 @@ fn copy_recursive(source: &Path, dest: &Path) {
         }
     }
 }
+
+// make with love for everyone

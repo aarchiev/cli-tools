@@ -5,14 +5,18 @@ use walkdir::WalkDir;
 use chrono::{Utc, Datelike, Timelike};
 
 fn main() {
-    // Auto-detect flashdisk path from exe location
-    let exe_path = env::current_exe().expect("Failed to get exe path");
-    let flashdisk_path = exe_path.parent().expect("Exe has no parent directory").to_path_buf();
+    // Auto-detect the flash disk path based on the executable's location.
+    // Assumes the executable is run from the flash disk's root.
+    let exe_path = env::current_exe().expect("Failed to get executable path");
+    let flashdisk_path = exe_path
+        .parent()
+        .expect("Executable has no parent directory")
+        .to_path_buf();
 
-    // Get user profile path
-    let user_profile = env::var("USERPROFILE").expect("USERPROFILE not set");
+    // Get the user's profile directory path from the environment variable.
+    let user_profile = env::var("USERPROFILE").expect("USERPROFILE environment variable not set");
 
-    // Generate timestamp for backup folder
+    // Generate a timestamp for the backup folder name (format: YYYY-MM-DD_HHMMSS).
     let now = Utc::now();
     let timestamp = format!(
         "{:04}-{:02}-{:02}_{:02}{:02}{:02}",
@@ -25,10 +29,10 @@ fn main() {
     );
     let backup_root = flashdisk_path.join(format!("Backup_{}", timestamp));
 
-    // Create backup root directory
+    // Create the backup root directory if it doesn't exist.
     fs::create_dir_all(&backup_root).expect("Failed to create backup directory");
 
-    // Blacklist folders to skip
+    // List of folder names to skip during backup (blacklist).
     let blacklist: Vec<&str> = vec![
         "AppData",
         "Local Settings",
@@ -37,14 +41,14 @@ fn main() {
         "Saved Games",
     ];
 
-    // Standard folders to include
+    // List of standard user folders to always include in the backup.
     let standard_folders: Vec<&str> = vec![
         "Desktop",
         "Documents",
         "Downloads",
     ];
 
-    // Scan user profile directory
+    // Scan the user profile directory for folders to back up.
     let user_path = Path::new(&user_profile);
     if let Ok(entries) = fs::read_dir(user_path) {
         for entry in entries.flatten() {
@@ -52,18 +56,18 @@ fn main() {
                 if file_type.is_dir() {
                     let folder_name = entry.file_name().to_string_lossy().to_string();
 
-                    // Skip hidden folders (starting with .)
-                    // you can delete this code
+                    // Skip hidden folders (those starting with '.').
                     if folder_name.starts_with('.') {
                         continue;
                     }
 
-                    // Skip blacklisted folders
+                    // Skip folders in the blacklist.
                     if blacklist.contains(&folder_name.as_str()) {
                         continue;
                     }
 
-                    // Include standard folders or custom user folders
+                    // Include standard folders or any other non-empty named folders.
+                    // This backs up standard folders plus any custom user-created folders.
                     if standard_folders.contains(&folder_name.as_str()) || !folder_name.is_empty() {
                         let source_dir = entry.path();
                         let dest_dir = backup_root.join(&folder_name);
@@ -79,6 +83,10 @@ fn main() {
     println!("Backup completed to: {}", backup_root.display());
 }
 
+/// Recursively copies the contents of the source directory to the destination directory.
+/// Uses WalkDir to traverse the directory tree.
+/// Creates directories as needed and copies files.
+/// Prints warnings for any failures but continues the process.
 fn copy_recursive(source: &Path, dest: &Path) {
     for entry in WalkDir::new(source).into_iter().filter_map(|e| e.ok()) {
         let source_path = entry.path();
@@ -86,10 +94,12 @@ fn copy_recursive(source: &Path, dest: &Path) {
         let dest_path = dest.join(relative_path);
 
         if entry.file_type().is_dir() {
+            // Create the directory in the destination.
             if let Err(e) = fs::create_dir_all(&dest_path) {
                 eprintln!("Warning: Failed to create directory {}: {}", dest_path.display(), e);
             }
         } else {
+            // Copy the file to the destination.
             if let Err(e) = fs::copy(source_path, &dest_path) {
                 eprintln!("Warning: Failed to copy {} to {}: {}", source_path.display(), dest_path.display(), e);
             }
@@ -97,4 +107,4 @@ fn copy_recursive(source: &Path, dest: &Path) {
     }
 }
 
-// make with love for everyone
+// Made with love for everyone

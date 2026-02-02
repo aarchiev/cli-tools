@@ -17,14 +17,20 @@ jobs:
     - name: Set up Rust
       uses: dtolnay/rust-toolchain@stable
 
+    - name: Run tests
+      run: |
+        cd Wifi
+        cargo test
+
     - name: Build release binary
       run: |
-        cd GrabNGo
+        cd Wifi
         cargo build --release
 
     - name: Upload Binary Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: GrabNGo-Windows-Binary
-        path: GrabNGo/target/release/grabngo.exe
-        retention-days: 5 
+        name: Wifi-Windows-Binary-${{ github.run_number }}-${{ github.run_attempt }}
+        path: Wifi/target/release/wifi.exe
+        if-no-files-found: error
+        retention-days: 30

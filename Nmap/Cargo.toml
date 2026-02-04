@@ -1,1 +1,3 @@
-
+[[bin]]
+name = "nmap"
+path = "nmap.rs"

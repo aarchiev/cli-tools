@@ -1,3 +1,13 @@
+[package]
+name = "nmap-rust"
+version = "0.1.0"
+edition = "2021"
+
 [[bin]]
 name = "nmap"
 path = "nmap.rs"
+
+[dependencies]
+clap = { version = "4.0", features = ["derive"] } 
+tokio = { version = "1.0", features = ["full"] }
+
